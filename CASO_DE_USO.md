@@ -7,7 +7,7 @@
 
 ## El problema antes del framework
 
-La empresa tenia 18 proyectos de IA corriendo en paralelo:
+La empresa tenia mas de 15 proyectos corriendo en paralelo:
 
 - Automatizacion de ventas por division
 - Inteligencia de mercado
@@ -27,7 +27,7 @@ La empresa tenia 18 proyectos de IA corriendo en paralelo:
 
 ## La implementacion
 
-El framework se implemento como sistema operativo del departamento de Inteligencia Operativa.
+El framework se implemento como sistema operativo del departamento.
 
 Archivos de configuracion: 3 archivos raiz + 1 archivo de contexto + 1 registry.
 
@@ -45,7 +45,7 @@ El agente genera el reporte automaticamente. El director solo lo lee y lo compar
 |---|---|---|
 | Tiempo de preparacion de reporte | 2-3 horas x 3-4 veces/semana | 5 minutos cuando se necesite |
 | Horas semanales en reporting | 8-12 horas | ~0 |
-| Proyectos con semaforo real | 0 (todos autodeclarados) | 18 (computados automaticamente) |
+| Proyectos con semaforo real | 0 (todos autodeclarados) | Todos (computados automaticamente) |
 | Tiempo para detectar un bloqueo | Semanas | 48-72 horas (siguiente checkpoint) |
 | Formato del reporte CEO | Datos tecnicos | Avance operativo en lenguaje ejecutivo |
 

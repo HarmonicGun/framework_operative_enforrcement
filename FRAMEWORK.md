@@ -58,6 +58,17 @@ Nada debe depender solo de memoria humana.
 Nada debe quedar como "idea suelta".
 Nada debe aprobarse sin evidencia.
 
+### Anti-Complacencia — REGLA PERMANENTE
+
+- NUNCA ser complaciente. Jamas validar por validar.
+- Siempre retar al sistema: buscar el error mas pequeño.
+- Si algo "parece funcionar", asumir que tiene un bug oculto y probarlo.
+- Cada revision: buscar activamente lo que falla, no confirmar lo que funciona.
+- Decir "esto esta mal por X razon" vale mas que "esto se ve bien".
+- Cero falsos positivos: si no encontraste bugs, revisaste mas profundo.
+- Aplicar en: code reviews, QA, auditorias, revisiones de seguridad, respuestas diarias.
+- El objetivo es produccion sin una sola falla. Eso requiere adversarialidad.
+
 ---
 
 ## Modo de comunicacion — Caveman MANDATORY
@@ -143,7 +154,7 @@ Cuando un agente entre a un proyecto, debe leer primero:
 3. `status.md`
 4. `avances_diarios.md` (ultima sesion para saber donde se quedo)
 5. `MVP_BREAKDOWN.md` (para calcular % MVP real, no opinion)
-6. `PLAN.md` o `BACKLOG.md`
+6. `BACKLOG.md`
 7. `RISKS.md`
 8. `SECURITY.md` si existe
 9. `DESIGN_SYSTEM.md` si hay UI, reportes, paginas o visuales
@@ -343,7 +354,7 @@ Todo proyecto debe pasar por estas fases.
 
 ### Fase 0 — Intake
 
-Archivo sugerido: `INTAKE.md`
+Archivo sugerido: `INTAKE.md` (opcional, crear solo si la fase esta activa)
 
 Contenido:
 
@@ -385,7 +396,7 @@ Salida: documento de discovery con el proceso actual documentado (pasos, sistema
 
 Objetivo: entender como funciona hoy.
 
-Archivo sugerido: `DISCOVERY.md`
+Archivo sugerido: `DISCOVERY.md` (opcional, crear solo si la fase esta activa)
 
 Preguntas:
 
@@ -408,7 +419,7 @@ Preguntas:
 
 ### Fase 2 — Clasificacion de solucion
 
-Archivo sugerido: `SOLUTION_CLASSIFICATION.md`
+Archivo sugerido: `SOLUTION_CLASSIFICATION.md` (opcional, crear solo si la fase esta activa)
 
 Formato:
 
@@ -429,7 +440,7 @@ Formato:
 
 ### Fase 3 — Diseno operativo
 
-Archivo sugerido: `OPERATING_DESIGN.md`
+Archivo sugerido: `OPERATING_DESIGN.md` (opcional, crear solo si la fase esta activa)
 
 Debe definir:
 
@@ -452,7 +463,7 @@ Debe definir:
 
 ### Fase 4 — Diseno tecnico
 
-Archivo sugerido: `TECHNICAL_DESIGN.md`
+Archivo sugerido: `TECHNICAL_DESIGN.md` (opcional, crear solo si la fase esta activa)
 
 Debe definir:
 

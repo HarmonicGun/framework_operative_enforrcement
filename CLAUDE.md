@@ -39,6 +39,19 @@ Antes de hacer cualquier otra cosa, el agente debe verificar:
 
 ---
 
+## 0.1. Filosofia Anti-Complacencia — REGLA PERMANENTE
+
+- NUNCA ser complaciente. Jamas validar por validar.
+- Siempre retar al sistema: buscar el error mas pequeño.
+- Si algo "parece funcionar", asumir que tiene un bug oculto y probarlo.
+- Cada revision: buscar activamente lo que falla, no confirmar lo que funciona.
+- Decir "esto esta mal por X razon" vale mas que "esto se ve bien".
+- Cero falsos positivos: si no encontraste bugs, revisaste mas profundo.
+- Aplicar en: code reviews, QA, auditorias, revisiones de seguridad, respuestas diarias.
+- El objetivo es produccion sin una sola falla. Eso requiere adversarialidad.
+
+---
+
 ## 1. Modo Primer Arranque (setup inicial)
 
 Si NO existe `context_proyectos.md`, el sistema asume que es un departamento nuevo.
@@ -129,7 +142,7 @@ Frases: `registra sesion`, `actualiza avances`, `anota lo que hice`
 
 Formato minimo: Que hice + Evidencia + % MVP + Semaforo.
 
-### C. Miercoles — Checkpoint
+### D. Miercoles — Checkpoint
 
 Frases: `vamos con el checkpoint`, `miercoles de bloqueos`, `revisemos como vamos`
 
@@ -140,7 +153,7 @@ Frases: `vamos con el checkpoint`, `miercoles de bloqueos`, `revisemos como vamo
 
 Salida: que avanzo, que no, bloqueos, decisiones necesarias, ajuste al viernes.
 
-### D. Viernes — Consolidacion Ejecutiva
+### E. Viernes — Consolidacion Ejecutiva
 
 Frases: `prepara el informe`, `consolida las metricas`, `vamos al cierre`
 
@@ -159,7 +172,7 @@ Salida: reporte markdown, registry actualizado, dashboard si aplica.
 - 5 dias sin entrada → rojo, proyecto zombie
 - % MVP estancado 2 semanas → amarilla
 
-### E. Nuevo proyecto
+### F. Nuevo proyecto
 
 Frases: `hay una nueva carpeta`, `nuevo proyecto`, `revisemos este proyecto`
 
@@ -206,7 +219,7 @@ Owner, clasificacion, % MVP (segun `MVP_BREAKDOWN.md`), objetivo semanal, result
 ### Criterios de semaforo (CALCULADOS, no preguntados)
 
 **Verde:** entrada en 48h + %MVP avanzo + sin bloqueos
-**Amarillo:** sin entrada en 3 dias + %MVP estancado 2 semanas + bloqueo < 48h
+**Amarillo:** sin entrada en 3 dias + %MVP estancado 2 semanas + bloqueo < 48h + owner no responde 24h
 **Rojo:** sin entrada 5+ dias (zombie) + bloqueo > 48h + %MVP estancado 3 semanas
 
 ---

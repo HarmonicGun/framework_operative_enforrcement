@@ -26,7 +26,7 @@ Gestiona un **pool de proyectos** — cada uno en su carpeta con stack, owner y 
 
 ### Paso 1: Copiar archivos del framework a la raiz
 
-Copia estos 3 archivos desde `_framework_kit/` a la raiz de tu portafolio:
+Copia estos 3 archivos desde la raiz de este repositorio a la raiz de tu portafolio:
 
 ```
 CLAUDE.md
@@ -34,15 +34,7 @@ PLAYBOOK.md
 FRAMEWORK.md
 ```
 
-### Paso 2: Crear contexto de proyectos
-
-Copia `plantillas/PORTFOLIO.md` a la raiz como `context_proyectos.md`. Llena: departamento, proyectos, prioridades.
-
-### Paso 3: Crear registry
-
-Copia `plantillas/registry.json` a la raiz como `playbook_registry.json`. Llena metadata de proyectos.
-
-### Paso 4: Abrir Claude Code
+### Paso 2: Abrir Claude Code
 
 ```bash
 cd /ruta/a/tu/carpeta/raiz
@@ -51,17 +43,19 @@ claude
 
 CLAUDE.md se carga automaticamente. No necesitas @-mencionar nada.
 
-### Paso 5: Activar
+### Paso 3: Activar
 
 Escribe cualquier cosa: `hola`, `arranquemos`, `empecemos`.
 
-O si quieres ir directo:
+El agente detecta que es primer uso (no existe `context_proyectos.md`), configura el sistema automaticamente:
+- Crea `context_proyectos.md` desde `plantillas/PORTFOLIO.md`
+- Crea `playbook_registry.json` desde `plantillas/registry.json`
+- Revisa cada proyecto existente y crea archivos minimos si faltan
+- Detecta el dia de la semana y te deja listo para trabajar
 
-```
-usa el framework para empezar a trabajar el dia de hoy en mis proyectos
-```
+No necesitas crear archivos manualmente. El agente lo hace por ti.
 
-El agente detecta que es primer uso (no existe `context_proyectos.md`), configura el sistema, detecta el dia de la semana y te deja listo para trabajar. No necesitas saber frases magicas.
+**Alternativa manual:** Si prefieres configurar sin el agente, copia `plantillas/PORTFOLIO.md` a la raiz como `context_proyectos.md` y llena los datos. Luego copia `plantillas/registry.json` como `playbook_registry.json`. Pero el camino automatico es mas rapido.
 
 ---
 
@@ -89,7 +83,7 @@ RAIZ/
 ├── FRAMEWORK.md
 ├── context_proyectos.md          ← creado por ti
 ├── playbook_registry.json        ← creado por ti
-├── _framework_kit/               ← kit original (no se toca)
+├── plantillas/                   ← templates del sistema
 ├── proyecto_1/
 │   ├── context.md
 │   ├── status.md

@@ -173,9 +173,14 @@ Actualiza `playbook_registry.json` con historial fresco.
 Los scripts de automatizacion viven en `scripts/` en la raiz del portafolio:
 
 - `scripts/framework_status.py` — estado del pool (compact para statusline, full para /hoy)
-- `scripts/playbook_report.py` — escanea repos git, genera borrador LUN/MIE/VIE
-- `scripts/friday_report_to_html.py` — convierte reporte markdown a dashboard HTML
-- `scripts/screenshot_report.js` — captura dashboard HTML a JPG
+- `scripts/zombie_detector.py` — detecta proyectos zombie segun criterios seccion 8
+- `scripts/semaforo_calculator.py` — calcula semaforos automaticamente desde datos reales
+- `scripts/validate_registry.py` — valida estructura y campos del registry.json
+- `scripts/setup.py` — wizard interactivo de onboarding
+- `scripts/playbook_report.py` — genera borrador LUN/MIE/VIE (en desarrollo)
+- `scripts/friday_report_to_html.py` — convierte reporte markdown a dashboard HTML (en desarrollo)
+- `scripts/init_project.py` — inicializa proyecto desde templates (en desarrollo)
+- `scripts/archive_week.py` — automatiza backup semanal (en desarrollo)
 
 ### Status line persistente
 
@@ -185,17 +190,17 @@ Para mostrar el estado del pool en la barra de estado del CLI:
 2. Ejecuta en Claude Code: `/statusline`
 3. Selecciona "Command" y escribe: `python3 scripts/framework_status.py`
 
-Esto muestra en tiempo real: `(4v 2a 0r) Market Verde 100% | Rafias Verde 100% | Sacos Verde 98%! | Multi Amarillo 90%`
+Esto muestra en tiempo real: `(4v 2a 0r) ProyectoA Verde 100% | ProyectoB Verde 100% | ProyectoC Verde 98%! | ProyectoD Amarillo 90%`
 
 ### Flujo del viernes automatizado
 
 ```bash
-python3 scripts/playbook_report.py --mode friday
-# → llenar borrador markdown con datos reales
-python3 scripts/friday_report_to_html.py --input reportes/YYYY-MM-DD_friday.md
-# → genera dashboard HTML
-node scripts/screenshot_report.js --input reportes/YYYY-MM-DD_friday.html
-# → genera JPG desktop + mobile
+python3 scripts/zombie_detector.py
+# → detecta proyectos sin actividad
+python3 scripts/semaforo_calculator.py
+# → recalcula semaforos y actualiza registry
+python3 scripts/framework_status.py full
+# → genera tabla completa de estado
 ```
 
 ### Registry auto-actualizable
