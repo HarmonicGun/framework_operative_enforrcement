@@ -203,6 +203,80 @@ python3 scripts/framework_status.py full
 # → genera tabla completa de estado
 ```
 
+### 11.1 Flujo completo del viernes — Dashboard visual
+
+Pipeline markdown → HTML → JPG desktop + mobile.
+
+#### Piezas del sistema
+
+| Archivo | Rol |
+|---|---|
+| `scripts/playbook_report.py` | Genera borrador markdown del viernes |
+| `playbook_registry.json` | Metadata de proyectos (owners, clasificacion) |
+| `scripts/friday_report_to_html.py` | Convierte markdown → HTML + actualiza KPI history |
+| `scripts/friday_dashboard.html.template` | Template HTML con variables sustituibles |
+| `scripts/screenshot_report.js` | Puppeteer: HTML → JPG desktop + mobile |
+| `kpi_history/YYYY/MM-month.json` | Historico de metricas semanales |
+| `reportes_playbook/` | Salida de reportes activos |
+| `reportes_playbook/archive/` | Historico de reportes archivados |
+
+#### Pipeline paso a paso
+
+```bash
+# 1. Generar borrador markdown
+python3 scripts/playbook_report.py --mode friday
+
+# 2. Llenar metricas en el markdown (agente o manual)
+
+# 3. Convertir a HTML desktop + actualizar KPI history
+python3 scripts/friday_report_to_html.py --input reportes_playbook/YYYY-MM-DD_friday.md
+
+# 4. Convertir a HTML mobile
+python3 scripts/friday_report_to_html.py --input reportes_playbook/YYYY-MM-DD_friday.md --output reportes_playbook/YYYY-MM-DD_friday_mobile.html --mode mobile
+
+# 5. Generar JPG desktop (viewport 1440x900)
+node scripts/screenshot_report.js --desktop --input reportes_playbook/YYYY-MM-DD_friday.html --output reportes_playbook/YYYY-MM-DD_friday_desktop.jpg
+
+# 6. Generar JPG mobile (viewport 390x844, 2x DPR)
+node scripts/screenshot_report.js --mobile --input reportes_playbook/YYYY-MM-DD_friday_mobile.html --output reportes_playbook/YYYY-MM-DD_friday_mobile.jpg
+```
+
+#### KPIs trackeados (WoW / MoM)
+
+Cada viernes se guarda snapshot en `kpi_history/YYYY/MM-month.json`.
+
+Por proyecto: MVP %, flujos implementados, flujos probados, bugs abiertos/cerrados, semaforo, blocker.
+
+Comparacion WoW: semana actual vs semana anterior del mismo mes.
+Comparacion MoM: semana actual vs semana 1 del mes previo.
+
+#### Reglas perpetuas de dashboards
+
+Estructura de `reportes_playbook/`:
+```
+reportes_playbook/
+├── archive/
+│   └── YYYY-MM-DD_*.{html,md,jpg}
+├── Dashboard_<CONTEXTO>_<DD>_<MES>.html
+├── Dashboard_<CONTEXTO>_<DD>_<MES>_mobile.html
+├── Dashboard_<CONTEXTO>_<DD>_<MES>_desktop.jpg
+└── Dashboard_<CONTEXTO>_<DD>_<MES>_mobile.jpg
+```
+
+Todo dashboard debe producir exactamente 4 archivos. Sin excepcion.
+
+**Contenido obligatorio:** solo proyectos activos, semaforos calculados, datos verificados con git log/status.md, footer con fecha y origen.
+
+**HTML mobile:** CSS override forzado. Grids a 1fr, hero-title 18px, kpi-val 28px, viewport 390px, tabla columnas 3 y 5 ocultas, chart height 180px.
+
+**Archivo semanal:** Al lunes siguiente, mover los 4 assets activos a `archive/`. Raiz de `reportes_playbook/` queda vacia para la nueva semana.
+
+#### Requisitos
+
+- Python 3.11+ (para `friday_report_to_html.py`)
+- Node.js + Puppeteer (`npm install` en `framework_operative_enforrcement/`)
+- `playbook_registry.json` actualizado
+
 ### Registry auto-actualizable
 
 Cada viernes, el agente actualiza `playbook_registry.json`:

@@ -69,6 +69,17 @@ Nada debe aprobarse sin evidencia.
 - Aplicar en: code reviews, QA, auditorias, revisiones de seguridad, respuestas diarias.
 - El objetivo es produccion sin una sola falla. Eso requiere adversarialidad.
 
+### Honestidad y Precision — REGLA PERMANENTE
+
+**El agente esta comprometido con la honestidad y precision por encima de todo.**
+
+- **Incertidumbre:** Si no esta seguro de un dato, decirlo. Nunca presentar algo incierto como hecho.
+- **Fuentes:** No inventar citas, URLs ni referencias. Si no hay fuente real, admitirlo.
+- **Estadisticas:** Senalar cifras no confirmadas. Recomendar verificacion oficial.
+- **Eventos recientes:** Avisar cuando un tema puede haber cambiado. No especular.
+- **Correcciones:** Si el usuario corrige algo, reconocerlo y corregir. No defender errores.
+- **Nivel de confianza:** Usar [Alta confianza], [Confianza media — verifica] o [Baja confianza — verifica antes de usar].
+
 ---
 
 ## Modo de comunicacion — Caveman MANDATORY
@@ -556,6 +567,35 @@ Ciclo:
 4. implementar
 5. validar
 6. repetir
+
+---
+
+## Regla de cierre de fase — MANDATORY, todos los proyectos
+
+Al completar CUALQUIER fase (0-9) en CUALQUIER proyecto, actualizar estos 4 archivos antes de marcar la fase como terminada:
+
+1. **BACKLOG.md** — Marcar items de la fase [x], actualizar header de fase actual
+2. **status.md** — Actualizar fase actual, estado, salud
+3. **context.md** — Actualizar tabla de fases
+4. **CHANGELOG.md** — Registrar que se agrego/actualizo/elimino
+
+Sin excepciones. La fase NO esta completa hasta que estos 4 archivos esten actualizados.
+Aplica a cada proyecto del portafolio.
+
+---
+
+## Confidencialidad de proyectos
+
+Proyectos marcados como `Confidencial` tienen reglas operativas estrictas:
+
+- NUNCA mencionar en reportes semanales LUN/MIE/VIE
+- NUNCA incluir en metricas del portafolio
+- NUNCA incluir en `context_proyectos.md`
+- NUNCA incluir en dashboards, resumenes ni sweeps diarios
+- NUNCA nombrar frente al equipo
+- Si el agente genera cualquier reporte de portafolio, el proyecto confidencial NO existe
+
+Tratar como si no estuviera en el portafolio. Solo visible para lider y CEO.
 
 ---
 

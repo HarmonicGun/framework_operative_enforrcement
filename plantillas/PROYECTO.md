@@ -29,9 +29,9 @@
 
 ## 3. Decisiones clave
 
-| Fecha | Decision | Por que |
-|---|---|---|
-| [DD/MM] | [Decision] | [Razon] |
+| Fecha | Decision | Por que | Alternativas descartadas | Regla |
+|---|---|---|---|---|
+| [DD/MM] | [Decision] | [Razon] | [Que se descarto y por que] | [Regla derivada si aplica] |
 
 ---
 
@@ -48,6 +48,10 @@
 
 ---
 
-## 5. Deuda tecnica
+## 5. Lo que NO se debe hacer
+
+- [Prohibicion concreta — que no hacer y por que]
+
+## 6. Deuda tecnica
 
 - [Pendiente no bloqueante]

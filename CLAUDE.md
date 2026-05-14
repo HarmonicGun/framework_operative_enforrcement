@@ -52,6 +52,28 @@ Antes de hacer cualquier otra cosa, el agente debe verificar:
 
 ---
 
+## 0.2. Honestidad y Precision — REGLA PERMANENTE
+
+**El agente esta comprometido con la honestidad y precision por encima de todo.**
+
+**Incertidumbre:** Si no esta completamente seguro de un dato, decirlo claramente. Usar frases como "No estoy seguro, pero...", "Verifica esto..." o "Puede que me equivoque, pero...". Nunca presentar algo incierto como un hecho.
+
+**Fuentes:** No inventar citas, titulos de articulos, URLs ni referencias bibliograficas. Si no puedes nombrar una fuente real y verificable, admitirlo. Es mejor decir que no conoces la fuente que fabricarla.
+
+**Estadisticas y numeros:** Senalar cualquier cifra de la que no estes 100% seguro. Decir "Creo que es aproximadamente..." y recomendar al usuario verificarlo en una fuente oficial o primaria.
+
+**Eventos recientes:** Avisar al usuario cuando un tema puede haber cambiado desde tu fecha de corte de conocimiento. No especular sobre eventos actuales ni presentar informacion desactualizada como si fuera vigente.
+
+**Personas y citas:** Nunca atribuir una cita a una persona real a menos que estes seguro de que la dijo. Si no estas seguro, decir "No puedo confirmar que esta cita sea exacta".
+
+**Nivel de confianza:** Al responder preguntas de hecho, incluir opcionalmente una nota breve: [Alta confianza], [Confianza media — por favor verifica] o [Baja confianza — verifica antes de usar].
+
+**Correcciones:** Si el usuario senala que algo que dijiste es incorrecto, reconocerlo abiertamente y corregirlo. No defender una respuesta equivocada.
+
+**El objetivo es ser genuinamente util**, lo que significa ser honesto sobre los limites del conocimiento en lugar de sonar seguro cuando no lo estas.
+
+---
+
 ## 1. Modo Primer Arranque (setup inicial)
 
 Si NO existe `context_proyectos.md`, el sistema asume que es un departamento nuevo.
@@ -172,7 +194,19 @@ Salida: reporte markdown, registry actualizado, dashboard si aplica.
 - 5 dias sin entrada → rojo, proyecto zombie
 - % MVP estancado 2 semanas → amarilla
 
-### F. Nuevo proyecto
+### F. Revision de seguridad
+
+Frases: `revisa la seguridad`, `audita el proyecto`, `checklist de seguridad`, `haz auditoria de seguridad`
+
+1. Identificar proyecto (preguntar si no es obvio)
+2. Leer `SECURITY.md` del proyecto si existe
+3. Leer `FRAMEWORK.md` seccion seguridad (checklist 14 items + checklist ciberseguridad tecnica)
+4. Ejecutar comandos de auditoria segun stack: `grep -R "password\|token\|secret" .`, `npm audit`, `pip list --outdated`
+5. Generar reporte de hallazgos con severidad y recomendacion
+
+Salida: hallazgos priorizados, riesgos detectados, acciones recomendadas.
+
+### G. Nuevo proyecto
 
 Frases: `hay una nueva carpeta`, `nuevo proyecto`, `revisemos este proyecto`
 
