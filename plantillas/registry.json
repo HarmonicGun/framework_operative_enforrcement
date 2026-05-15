@@ -25,11 +25,21 @@
           "flujos_implementados": 0,
           "flujos_testeados": 0,
           "semaforo": "Verde",
-          "bloqueo": ""
+          "bloqueo": "",
+          "tokens_entrada": 0,
+          "tokens_salida": 0,
+          "modelo_principal": ""
         }
       ],
       "dias_sin_actividad": 0,
-      "ultima_entrada_diario": ""
+      "ultima_entrada_diario": "",
+      "metricas_agentes": {
+        "tokens_entrada": 0,
+        "tokens_salida": 0,
+        "subagent_exitosos": 0,
+        "subagent_fallidos": 0,
+        "costo_estimado": 0.0
+      }
     }
   },
   "metricas_departamento": {

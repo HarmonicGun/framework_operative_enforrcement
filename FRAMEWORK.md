@@ -73,12 +73,41 @@ Nada debe aprobarse sin evidencia.
 
 **El agente esta comprometido con la honestidad y precision por encima de todo.**
 
-- **Incertidumbre:** Si no esta seguro de un dato, decirlo. Nunca presentar algo incierto como hecho.
-- **Fuentes:** No inventar citas, URLs ni referencias. Si no hay fuente real, admitirlo.
-- **Estadisticas:** Senalar cifras no confirmadas. Recomendar verificacion oficial.
-- **Eventos recientes:** Avisar cuando un tema puede haber cambiado. No especular.
-- **Correcciones:** Si el usuario corrige algo, reconocerlo y corregir. No defender errores.
-- **Nivel de confianza:** Usar [Alta confianza], [Confianza media — verifica] o [Baja confianza — verifica antes de usar].
+- **Incertidumbre:** Si no esta completamente seguro de un dato, decirlo claramente. Usar "No estoy seguro, pero...", "Verifica esto...", "Puede que me equivoque, pero...". Nunca presentar algo incierto como hecho.
+- **Fuentes:** No inventar citas, titulos, URLs ni referencias bibliograficas. Si no puedes nombrar fuente real y verificable, admitirlo. Mejor decir que no conoces la fuente que fabricarla.
+- **Estadisticas y numeros:** Senalar cualquier cifra de la que no estes 100% seguro. Decir "Creo que es aproximadamente..." y recomendar verificacion en fuente oficial o primaria.
+- **Eventos recientes:** Avisar cuando el tema puede haber cambiado desde la fecha de corte de conocimiento. No especular sobre eventos actuales ni presentar info desactualizada como vigente.
+- **Personas y citas:** Nunca atribuir una cita a una persona real a menos que estes seguro de que la dijo. Si no, decir "No puedo confirmar que esta cita sea exacta".
+- **Nivel de confianza:** En preguntas de hecho, incluir nota: [Alta confianza], [Confianza media — verifica] o [Baja confianza — verifica antes de usar].
+- **Correcciones:** Si el usuario corrige algo, reconocerlo abiertamente y corregirse. No defender respuestas equivocadas.
+
+**Objetivo: ser genuinamente util. Eso significa ser honesto sobre los limites del conocimiento en lugar de sonar seguro cuando no lo estas.**
+
+### Optimizacion de Contexto — REGLA PERMANENTE
+
+**El contexto es recurso finito. Cada token gastado en leer = token no disponible para pensar.**
+
+Protocolo completo en `CLAUDE.md` seccion 0.4. Reglas clave:
+
+- **Lectura por niveles:** L1 headers → L2 secciones relevantes → L3 archivo completo. L3 solo justificado.
+- **Sub-agente para lecturas pesadas:** exploracion e investigacion van a sub-agente con modelo barato. Aisla contexto del agente principal.
+- **Presupuesto por sesion:** planning 15K, checkpoint 20K, consolidacion 30K, diario 10K tokens.
+- **Carga condicional:** solo archivos necesarios. Saltar DESIGN_SYSTEM sin UI, SECURITY sin datos.
+- **Lost in the Middle:** info critica al inicio, referencias al final. No reglas operativas entre archivos de referencia.
+- **Memoria viva:** actualizar status.md y avances_diarios.md al cerrar sesion. Memoria fresca = menos re-lectura.
+
+### Planeacion y Tareas Atomicas — REGLA PERMANENTE
+
+**Tareas o proyectos largos → modo planeacion por defecto. Siempre.**
+
+- **Modo planeacion obligatorio:** toda tarea larga arranca con plan explicito antes de ejecutar.
+- **Tareas atomicas:** descomponer en unidades atomicas. Una tarea = una accion verificable.
+- **Razon:** modelos baratos o rapidos pierden hilo en tareas ambiguas. Atomicidad preserva consistencia entre modelos.
+- **Memoria viva:** mantener al dia memoria de proyecto (`context.md`, `status.md`) y pool (`context_proyectos.md`, `playbook_registry.json`). Menos tokens en re-contextualizar.
+- **Roles optimizan tokens:** modelo elige mejores practicas segun rol (planeador, ejecutor, revisor, auditor). Modelo barato cuando alcance, caro solo si el rol lo justifica.
+- **Sprints autoverificables:** bloque de N tareas atomicas se cierra con verificacion explicita. Sin verificacion, no cierra.
+- **Orden estricto:** no avanzar sin terminar la anterior. Excepcion: tareas completamente excluyentes sin dependencia.
+- **Delegacion a sub-agentes:** ver `AGENTS.md`. Usar sub-agente para exploracion, investigacion y lecturas grandes. Aisla contexto del agente principal. Sub-agente explore siempre con modelo barato.
 
 ---
 
@@ -609,6 +638,8 @@ Tratar como si no estuviera en el portafolio. Solo visible para lider y CEO.
 6. **Documentar mientras se construye.** No despues.
 7. **Backlog vivo.** Siempre priorizado, siempre accionable.
 8. **Clasificar antes de construir.** No todo necesita ser un sistema.
+9. **Backlog vivo.** Siempre priorizado, siempre accionable.
+10. **Delegar para aislar contexto.** Exploracion e investigacion van a sub-agente con modelo barato. El agente principal conserva contexto para decision y construccion.
 
 ---
 

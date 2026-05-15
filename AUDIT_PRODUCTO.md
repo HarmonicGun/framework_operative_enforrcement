@@ -59,13 +59,13 @@
 
 ---
 
-## C. CONTENIDO ESPECIFICO DE DESPLIEGUE (RESUELTO en v0.2.0)
+## C. CONTENIDO GO-ESPECIFICO (debe parametrizarse para producto generico)
 
-1. ~~`framework_status.py` lineas 9-23: diccionario `SHORT` hardcodeado~~ → RESUELTO: lee `short_name` del registry
-2. ~~PLAYBOOK.md linea 189: ejemplo statusline con nombres de proyectos reales~~ → RESUELTO: ejemplos genericos
-3. ~~CASO_DE_USO.md: caso de estudio identificable~~ → RESUELTO: anonimizado
-4. ~~LICENSE.md: referencias a organizacion especifica~~ → RESUELTO: licencia generica
-5. ~~AUTHORS.md: referencias a departamento especifico~~ → RESUELTO: generico
+1. `framework_status.py` lineas 9-23: diccionario `SHORT` con 13 nombres de proyectos GO hardcodeados
+2. PLAYBOOK.md linea 189: ejemplo statusline con "Market", "Rafias", "Sacos", "Multi"
+3. CASO_DE_USO.md: caso de estudio identificable como GO (18 proyectos, ERP, divisiones)
+4. LICENSE.md lineas 7-8: nombra Grupo Ortiz y branch `joseaguilar_go`
+5. AUTHORS.md lineas 9-13: nombra el departamento GO y autorizacion
 
 ---
 
@@ -76,7 +76,7 @@
 3. **`.claude/settings.local.json` esta commiteado** — deberia estar en .gitignore
 4. **Solo 2 commits** — primer commit "Add files via upload" (GitHub web UI)
 5. **Cero tags, cero releases** — no hay forma de pinear version
-6. **Branch personal** → RESUELTO: branch renombrada a `main` en repo publico
+6. **Branch `joseaguilar_go`** expone nombre personal en repo de producto
 7. **Idioma mixto** — README/CASO_DE_USO en espanol, AUTHORS en ingles, script en ingles
 
 ---

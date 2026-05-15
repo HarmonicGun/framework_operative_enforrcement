@@ -1,74 +1,89 @@
 const puppeteer = require("puppeteer");
 const path = require("path");
 
-// DATA: sustituir con datos reales del playbook_registry.json
-// Este archivo es un template. Los datos de ejemplo usan los proyectos ficticios de examples/.
 const DATA = {
-  semana: "DD — DD Mes 20YY",
-  generado: "Viernes DD Mes 20YY",
+  semana: "03 — 08 Mayo 2026",
+  generado: "Viernes 8 Mayo 2026",
   proyectos: [
     {
-      nombre: "Proyecto Alfa",
-      owner: "Ana",
-      fase: "Fase 8 — Produccion",
+      nombre: "Sacos",
+      owner: "Carlos Jaramillo",
+      fase: "Fase 2 — Build",
+      estado: "Activo",
+      semaforo: "green",
+      commits: 16,
+      prs: 6,
+      diasActivo: 5,
+      pctMVP: "~55%",
+      tests: "activos",
+      bugsCerrados: 4,
+      highlights: [
+        "NetSuite OAuth 1.0 TBA",
+        "Rol cliente + catálogo",
+        "Upload drag & drop",
+        "Frontend 3 paneles nuevos",
+      ],
+    },
+    {
+      nombre: "Rafias",
+      owner: "José Aguilar",
+      fase: "Fase 7 — Pilot",
       estado: "Estable",
       semaforo: "green",
-      commits: 24,
-      prs: 3,
-      diasActivo: 5,
-      pctMVP: "95%",
-      tests: "120/120",
-      bugsCerrados: 5,
-      highlights: [
-        "API estable 99.9% uptime",
-        "Onboarding completado",
-        "Monitorizacion activa",
-        "Backups automatizados",
-      ],
-    },
-    {
-      nombre: "Proyecto Beta",
-      owner: "Luis",
-      fase: "Fase 5 — Build",
-      estado: "Desarrollo activo",
-      semaforo: "yellow",
-      commits: 12,
-      prs: 2,
-      diasActivo: 3,
-      pctMVP: "60%",
-      tests: "45/50",
-      bugsCerrados: 3,
-      highlights: [
-        "Modulo principal funcionando",
-        "Integracion pendiente",
-        "Bloqueo: esperando acceso API externo",
-        "Sprint 3 completado",
-      ],
-    },
-    {
-      nombre: "Proyecto Gamma",
-      owner: "Carlos",
-      fase: "Fase 2 — Clasificacion",
-      estado: "En diseno",
-      semaforo: "red",
-      commits: 0,
+      commits: 19,
       prs: 0,
-      diasActivo: 0,
-      pctMVP: "10%",
+      diasActivo: 4,
+      pctMVP: "100%",
+      tests: "151/151",
+      bugsCerrados: 8,
+      highlights: [
+        "7 hallazgos críticos resueltos",
+        "E2E tests 9/9",
+        "DB limpia + model-agnostic",
+        "Framework portable",
+      ],
+    },
+    {
+      nombre: "Market Intel",
+      owner: "José Aguilar",
+      fase: "Fase 8 — Prod",
+      estado: "Mantenimiento",
+      semaforo: "yellow",
+      commits: 2,
+      prs: 0,
+      diasActivo: 2,
+      pctMVP: "100%",
       tests: "N/D",
       bugsCerrados: 0,
       highlights: [
-        "Propuesta inicial entregada",
-        "Esperando decision de sponsor",
-        "Sin actividad 27 dias",
+        "Reestructuración docs",
+        "Framework files cleanup",
+      ],
+    },
+    {
+      nombre: "Multiestudo",
+      owner: "José Aguilar",
+      fase: "Fase 6 — Review",
+      estado: "Demo funcional",
+      semaforo: "yellow",
+      commits: 3,
+      prs: 0,
+      diasActivo: 3,
+      pctMVP: "85%",
+      tests: "N/D",
+      bugsCerrados: 0,
+      highlights: [
+        "Plataforma funcionando",
+        "UI updates",
+        "Demo disponible",
       ],
     },
   ],
   resumen: {
-    totalCommits: 36,
-    totalPRs: 5,
-    totalBugs: 8,
-    proyectosActivos: 2,
+    totalCommits: 40,
+    totalPRs: 6,
+    totalBugs: 12,
+    proyectosActivos: 4,
   },
 };
 
@@ -229,7 +244,7 @@ function buildHTML() {
     <div class="summary-box"><span class="val">${DATA.resumen.proyectosActivos}</span><span class="lbl">Proyectos</span></div>
   </div>
   ${rows}
-  <div class="footer">Framework Operativo · <span>#FB670B</span></div>
+  <div class="footer">Grupo Ortiz · Inteligencia Operativa · <span>#FB670B</span></div>
 </body>
 </html>`;
 }

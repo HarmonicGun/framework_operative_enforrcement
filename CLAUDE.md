@@ -74,6 +74,129 @@ Antes de hacer cualquier otra cosa, el agente debe verificar:
 
 ---
 
+## 0.3. Planeacion y Tareas Atomicas — REGLA PERMANENTE
+
+**Tareas o proyectos largos → modo planeacion por defecto. Siempre.**
+
+- **Modo planeacion obligatorio:** toda tarea o proyecto largo arranca con plan explicito antes de ejecutar. Nunca ejecutar a ciegas.
+- **Tareas atomicas:** descomponer todo en unidades atomicas. Una tarea = una accion verificable, una salida concreta.
+- **Razon:** modelos baratos o rapidos pierden contexto si la tarea es ambigua. La atomicidad evita perdida de hilo y mantiene consistencia entre cambios de modelo.
+- **Memoria viva siempre:** mantener actualizada memoria de proyecto (`context.md`, `status.md`) y memoria del pool (`context_proyectos.md`, `playbook_registry.json`). Memoria al dia = menos tokens re-leyendo contexto.
+- **Roles optimizan tokens:** el modelo elige las mejores practicas segun el rol activo (planeador, ejecutor, revisor, auditor) para minimizar gasto. Usar modelo barato cuando alcance, caro solo cuando lo justifique el rol.
+- **Sprints autoverificables:** cada bloque de N tareas atomicas se cierra con verificacion explicita. Sin verificacion, no se cierra el sprint.
+- **Orden estricto:** no avanzar a la siguiente tarea sin terminar la anterior. Excepcion unica: tareas completamente excluyentes sin dependencia.
+
+- **Delegacion a sub-agentes:** documentado en `AGENTS.md`. Usar sub-agente para exploracion, investigacion y lecturas pesadas. Aisla contexto del agente principal. Sub-agente explore siempre con modelo barato.
+
+**Sin estas reglas:** se pierde hilo, se gastan tokens en re-contextualizar, se acumulan tareas a medias.
+
+---
+
+## 0.4. Optimizacion de Contexto — REGLA PERMANENTE
+
+**El contexto es recurso finito. Cada token leido = token no disponible para pensar.**
+
+### Lectura por niveles
+
+- **L1 — Escaneo rapido (~200 tokens):** leer solo headers de archivos. Identificar que secciones importan.
+- **L2 — Secciones relevantes (~2K tokens):** leer solo secciones necesarias para la tarea.
+- **L3 — Lectura profunda (~5K+ tokens):** archivo completo. Solo si se justifica.
+- **Default:** L1 → L2. L3 solo con motivo explicito (auditoria, build, refactor grande).
+
+### Presupuesto por tipo de sesion
+
+| Sesion | Budget | Que cargar |
+|--------|--------|------------|
+| Planning (LUN) | ~15K | PLAYBOOK + context_proyectos + avances diarios |
+| Checkpoint (MIE) | ~20K | PLAYBOOK + avances diarios + BACKLOGs activos |
+| Consolidacion (VIE) | ~30K | Todo anterior + registry + historial |
+| Auditoria | ~40K | FRAMEWORK + SECURITY + codebase |
+| Diario (MAR/JUE/SAB) | ~10K | avances_diarios + status del proyecto |
+
+### Aislamiento de contexto
+
+- Lecturas pesadas → sub-agente explore (modelo barato).
+- Exploracion de codebase → sub-agente explore.
+- Investigacion multi-archivo → sub-agente explore.
+- El agente principal recibe resumen de 3 lineas. No archivos crudos.
+
+### Lost in the Middle
+
+- Info critica al INICIO: reglas, datos del proyecto, objetivo.
+- Referencias al FINAL: plantillas, checklists, ejemplos.
+- Archivos largos (>100 ln) al final.
+- NUNCA reglas operativas entre archivos de referencia.
+- CLAUDE.md siempre se carga primero (el sistema lo hace automatico).
+
+### Carga condicional
+
+- > 10 proyectos activos → cargar solo top 5 por prioridad.
+- Sin UI en el proyecto → saltar DESIGN_SYSTEM.md.
+- Sin datos/usuarios/integraciones → saltar SECURITY.md.
+- Ejecucion pura (build, fix) → saltar checklists.
+- Tarea puramente operativa → saltar FRAMEWORK.md (usar solo PLAYBOOK.md).
+
+### Path-scoped rules (`.claude/rules/`)
+
+Reglas que cargan solo cuando Claude trabaja con archivos especificos. Ahorra contexto:
+
+```markdown
+# .claude/rules/api-design.md
+---
+paths:
+  - "src/api/**/*.ts"
+  - "lib/**/*.ts"
+---
+# API Development Rules
+- Todos los endpoints validan inputs.
+- Usar formato de error estandar.
+- Incluir documentacion OpenAPI.
+```
+
+- Sin `paths` = regla global (carga siempre).
+- Con `paths` = solo cuando se leen archivos matching.
+- Soporta glob patterns: `**/*.ts`, `src/**/*`, `*.md`.
+- User-level en `~/.claude/rules/` aplican a todos los proyectos.
+- Symlinks soportados para compartir reglas entre proyectos.
+
+### Compaction strategy
+
+El contexto se llena. Claude Code comprime automaticamente, pero hay que ayudar:
+
+- `/clear` entre tareas no relacionadas. Obligatorio.
+- `/compact <instrucciones>` para compresion dirigida: `/compact enfocate en cambios de API`.
+- `Esc + Esc` → `/rewind` → "Summarize from here" para comprimir parcial.
+- Despues de 2 correcciones fallidas al mismo issue → `/clear` y prompt nuevo.
+- En CLAUDE.md: instruir que preservar en compaction: "Al compactar, preservar lista de archivos modificados y comandos de test".
+- Lo que sobrevive compaction: CLAUDE.md root (re-leido de disco). Sub-directorios: recargan al leer archivos.
+- Lo que NO sobrevive: instrucciones dadas solo en chat. Por eso rules importantes van en CLAUDE.md.
+
+### Side questions (`/btw`)
+
+Para preguntas que no deben consumir contexto:
+
+- `/btw que hace esta funcion?` → respuesta en overlay, no entra en historial.
+- Util para: chequear sintaxis, verificar tipos, dudas rapidas.
+- La respuesta es temporal. No persiste en la sesion.
+
+### Tamano objetivo de CLAUDE.md
+
+- **Max 200 lineas por archivo CLAUDE.md.** Fuente: doc oficial Claude Code.
+- Archivos mas largos → menor adherencia a instrucciones.
+- Si crece demasiado: mover a path-scoped rules (`.claude/rules/`) o skills.
+- Poda regular: si una regla no cambia comportamiento → eliminar.
+- Preguntar por cada linea: "si elimino esto, Claude cometeria errores?" Si no → fuera.
+
+### Ciclo de vida de memoria
+
+- Inicio de sesion: verificar frescura de context.md y status.md.
+- > 3 dias sin update → leer avances_diarios.md para reconectar.
+- > 7 dias sin actividad → sugerir archivar proyecto.
+- Fin de sesion: actualizar status.md y avances_diarios.md.
+- Memoria del pool (context_proyectos.md): actualizar cada viernes.
+
+---
+
 ## 1. Modo Primer Arranque (setup inicial)
 
 Si NO existe `context_proyectos.md`, el sistema asume que es un departamento nuevo.
@@ -114,6 +237,7 @@ Multiples proyectos en diferentes fases. Cada subcarpeta es independiente con su
 | Archivo | Rol |
 |---|---|
 | `CLAUDE.md` | **Gobierna al agente.** Autoridad maxima. |
+| `AGENTS.md` | **Delegacion de agentes.** Cuando y como usar sub-agentes. |
 | `PLAYBOOK.md` | Sistema operativo: cadencia, roles, metricas, semaforos |
 | `FRAMEWORK.md` | Framework universal: fases 0-9, seguridad, diseño |
 | `ONBOARDING.md` | Guia de instalacion |
@@ -185,9 +309,20 @@ Frases: `prepara el informe`, `consolida las metricas`, `vamos al cierre`
 4. Detectar top avances, riesgos, zombies
 5. Preparar reporte ejecutivo
 6. Actualizar `playbook_registry.json` con historial fresco
-7. Si hay scripts: generar dashboard HTML + JPG
+7. **MANDATORY:** generar 2 dashboards HTML + 2 JPGs (ver seccion 5.4 en PLAYBOOK.md)
 
-Salida: reporte markdown, registry actualizado, dashboard si aplica.
+Salida: reporte markdown, registry actualizado, 4 archivos dashboard.
+
+**REGLA MANDATORIA — Dashboards duales siempre:**
+- Todo dashboard genera 4 archivos: desktop HTML, desktop JPG, mobile HTML, mobile JPG
+- Naming: `Dashboard_[DIA]_[DD]_[Mes]_desktop.html|jpg` y `Dashboard_[DIA]_[DD]_[Mes]_mobile.html|jpg`
+- Guardar en `reportes_playbook/`
+- Desktop: multi-columna, 1440x1250, contenido completo
+- Mobile: single-columna 390px, diseno compacto, flujo natural. PROHIBIDO `overflow:hidden` y altura fija
+- Mobile: hero + signals + project grid 2x2 + focus + footer. NO tablas, NO graficos.
+- Captura JPG con Chrome headless: `--headless=new --force-device-scale-factor=2 --screenshot --window-size=[W]x[H]`
+- Altura SIEMPRE medida con JS `scrollHeight`. Desktop Y mobile. NUNCA altura fija. NUNCA adivinar.
+- Esta regla aplica a viernes, checkpoint, y cualquier dashboard solicitado
 
 **Deteccion de zombies en checkpoint y viernes:**
 - 3 dias sin entrada → alerta amarilla
@@ -239,10 +374,49 @@ Sin `avances_diarios.md`, el lunes arranca ciego.
 
 ---
 
-## 6. Proyectos prioritarios
+## 6. Ordenamiento dinamico de proyectos
 
-Orden segun `context_proyectos.md` > "Prioridades para reporte semanal".
-Si el usuario menciona proyecto concreto, ese sube al frente.
+Orden calculado, no opinado. Fuente unica: `playbook_registry.json`.
+
+### Formula de prioridad
+
+```
+score = (dias_sin_actividad * 0.10)
+      + ((100 - %_mvp) * 0.30)
+      + (fase_ponderada * 0.20)
+      + (severidad_bloqueo * 0.25)
+      + (bonus_clasificacion * 0.15)
+```
+
+Variables:
+- `dias_sin_actividad`: dias desde ultima entrada en avances_diarios
+- `%_mvp`: porcentaje de MVP_BREAKDOWN.md (completados/totales * 100)
+- `fase_ponderada`: fase_actual / 10 (fase 5 = 0.5, fase 8 = 0.8)
+- `severidad_bloqueo`: ninguno=0, bajo=0.3, medio=0.5, alto=0.8, critico=1.0
+- `bonus_clasificacion`: produccion=0.50, piloto=0.30, desarrollo=0.20, diseno=0.10, otro=0
+
+Mayor score = mayor prioridad.
+
+### Reglas de auto-escalado
+
+- Bloqueo > 48h → +20% al score.
+- Zombie (5+ dias sin actividad) → excluir a cola "EN ESPERA".
+- % MVP estancado 2 semanas → -30% al score.
+- Owner no responde 24h → +1 nivel de prioridad.
+- Proyecto confidencial → nunca aparece en ordenamiento publico.
+
+### Capacidad
+
+- Max 3-4 proyectos activos por semana.
+- Resto → etiqueta "EN ESPERA" con motivo.
+- Auto-promover al completar o archivar un activo.
+- Si usuario menciona proyecto concreto → sube al frente (override manual).
+
+### Recalculo
+
+- Cada lunes en sprint planning.
+- Cada viernes en consolidacion.
+- Usar `python3 scripts/framework_status.py full` para ver orden actual.
 
 ---
 
@@ -299,6 +473,7 @@ Regla: menos docs > mas docs. Cada doc adicional suma costo de navegacion. Antes
 
 | Recurso | Archivo |
 |---|---|
+| Agentes | `AGENTS.md` |
 | Playbook | `PLAYBOOK.md` |
 | Framework | `FRAMEWORK.md` |
 | Portfolio | `context_proyectos.md` |
